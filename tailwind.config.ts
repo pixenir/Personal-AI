@@ -61,7 +61,26 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				chatbot: {
+					primary: 'hsl(var(--chatbot-primary))',
+					'primary-foreground': 'hsl(var(--chatbot-primary-foreground))',
+					secondary: 'hsl(var(--chatbot-secondary))',
+					'message-user': 'hsl(var(--chatbot-message-user))',
+					'message-bot': 'hsl(var(--chatbot-message-bot))',
+					thinking: 'hsl(var(--chatbot-thinking))'
 				}
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-surface': 'var(--gradient-surface)'
+			},
+			boxShadow: {
+				'chatbot': 'var(--shadow-chatbot)',
+				'message': 'var(--shadow-message)'
+			},
+			transitionProperty: {
+				'smooth': 'var(--transition-smooth)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
