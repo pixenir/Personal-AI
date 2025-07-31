@@ -35,6 +35,7 @@ export const ChatBot = ({ isOpen, onToggle }: ChatBotProps) => {
   const [tempApiKey, setTempApiKey] = useState("");
   const [isApiKeyDialogOpen, setIsApiKeyDialogOpen] = useState(false);
   const [attachment, setAttachment] = useState<File | null>(null);
+  const [showApiKeyPrompt, setShowApiKeyPrompt] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -47,6 +48,13 @@ export const ChatBot = ({ isOpen, onToggle }: ChatBotProps) => {
       setApiKey(savedApiKey);
     }
   }, []);
+
+  // Show API key prompt if no API key when chatbot opens
+  useEffect(() => {
+    if (isOpen && !apiKey) {
+      setShowApiKeyPrompt(true);
+    }
+  }, [isOpen, apiKey]);
 
   // Add welcome message when chatbot opens for the first time
   useEffect(() => {
@@ -82,11 +90,12 @@ export const ChatBot = ({ isOpen, onToggle }: ChatBotProps) => {
     setApiKey(tempApiKey);
     localStorage.setItem("gemini-api-key", tempApiKey);
     setIsApiKeyDialogOpen(false);
+    setShowApiKeyPrompt(false); // Hide the API key prompt
     setTempApiKey("");
     
     toast({
       title: "Success",
-      description: "API key saved successfully!",
+      description: "API key সেভ হয়েছে! এখন চ্যাট করতে পারবেন।",
     });
   };
 
@@ -262,9 +271,12 @@ export const ChatBot = ({ isOpen, onToggle }: ChatBotProps) => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Dialog open={isApiKeyDialogOpen} onOpenChange={setIsApiKeyDialogOpen}>
+              <Dialog open={isApiKeyDialogOpen} onOpenChange={(open) => {
+                setIsApiKeyDialogOpen(open);
+                if (open) setTempApiKey(apiKey || ""); // Pre-fill with existing API key
+              }}>
                 <DialogTrigger asChild>
-                  <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                  <Button variant="ghost" size="sm" className="text-white hover:bg-white/20" title="API Key Settings">
                     <Key className="h-4 w-4" />
                   </Button>
                 </DialogTrigger>
@@ -307,6 +319,47 @@ export const ChatBot = ({ isOpen, onToggle }: ChatBotProps) => {
               )}
             </div>
           </div>
+
+          {/* API Key Setup Modal for new users */}
+          {showApiKeyPrompt && !apiKey && (
+            <div className="absolute inset-0 bg-white/95 backdrop-blur-sm flex items-center justify-center p-6 rounded-lg z-50">
+              <div className="text-center space-y-4 max-w-sm">
+                <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto">
+                  <Key className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">Setup Required</h3>
+                <p className="text-muted-foreground">
+                  আপনার Google AI API key সেট করুন চ্যাটিং শুরু করার জন্য
+                </p>
+                <div className="space-y-3">
+                  <Input
+                    type="password"
+                    placeholder="আপনার Google AI API key এখানে দিন"
+                    value={tempApiKey}
+                    onChange={(e) => setTempApiKey(e.target.value)}
+                  />
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={saveApiKey} 
+                      className="flex-1 bg-chatbot-primary"
+                      disabled={!tempApiKey.trim()}
+                    >
+                      API Key সেভ করুন
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setShowApiKeyPrompt(false)}
+                    >
+                      বাতিল
+                    </Button>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Google AI Studio থেকে আপনার API key নিন
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
