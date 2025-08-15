@@ -361,6 +361,41 @@ export const ChatBot = ({ isOpen, onToggle }: ChatBotProps) => {
             </div>
           )}
 
+          {/* Instructions Panel */}
+          {messages.length === 1 && (
+            <div className="p-4 bg-gradient-to-br from-chatbot-primary/5 to-chatbot-accent/5 rounded-lg border border-chatbot-primary/10 mb-4">
+              <h3 className="font-semibold text-chatbot-primary mb-3 flex items-center gap-2">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+                চ্যাটবট ব্যবহারের নির্দেশনা
+              </h3>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex items-start gap-2">
+                  <span className="text-chatbot-primary font-medium">💬</span>
+                  <span>যেকোনো প্রশ্ন টাইপ করুন এবং এন্টার চাপুন</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-chatbot-primary font-medium">📎</span>
+                  <span>ছবি আপলোড করতে ক্লিপ আইকনে ক্লিক করুন</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-chatbot-primary font-medium">😊</span>
+                  <span>ইমোজি যোগ করতে স্মাইলি আইকনে ক্লিক করুন</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-chatbot-primary font-medium">🔑</span>
+                  <span>API Key পরিবর্তন করতে চাবি আইকনে ক্লিক করুন</span>
+                </div>
+                <div className="mt-3 p-2 bg-blue-50 rounded border-l-4 border-blue-400">
+                  <p className="text-blue-700 text-xs">
+                    <strong>টিপস:</strong> স্পষ্ট এবং বিস্তারিত প্রশ্ন করলে আরও ভালো উত্তর পাবেন
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.map((message) => (
